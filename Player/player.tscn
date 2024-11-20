@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://dlpjif83x2mf5"]
+
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_s2swo"]
+[ext_resource type="Material" uid="uid://er1uhbr6wogm" path="res://Materials/Blue.tres" id="2_fl2g2"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3ri2o"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_lbfdx"]
+material = ExtResource("2_fl2g2")
+size = Vector3(0.1, 0.1, 1)
+
+[node name="Player" type="Node3D"]
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+script = ExtResource("1_s2swo")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_3ri2o")
+
+[node name="Head" type="Node3D" parent="CharacterBody3D"]
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.640348, 0)
+
+[node name="Gunstandin" type="MeshInstance3D" parent="CharacterBody3D/Head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.31, -0.119348, -0.025)
+mesh = SubResource("BoxMesh_lbfdx")
+skeleton = NodePath("../../../..")
