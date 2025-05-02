@@ -1,0 +1,48 @@
+[gd_scene load_steps=10 format=3 uid="uid://tkce5n4sap64"]
+
+[ext_resource type="Script" path="res://Scripts/PugStateMachine.gd" id="1_gh8ub"]
+[ext_resource type="Material" uid="uid://d2kkttwkjxam3" path="res://Materials/Green.tres" id="2_jw4io"]
+[ext_resource type="Script" path="res://Scripts/States/State Machine.gd" id="3_jegbk"]
+[ext_resource type="Script" path="res://Scripts/States/PugIdle.gd" id="4_ctmp5"]
+[ext_resource type="Script" path="res://Scripts/States/PugChase.gd" id="5_r8bh3"]
+[ext_resource type="Script" path="res://Scripts/States/PugEscape.gd" id="6_8f6k1"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_stsib"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_38sxs"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_mjr8f"]
+size = Vector3(0.1, 0.1, 1)
+
+[node name="PUG" type="Node3D" groups=["Pug"]]
+
+[node name="Pug" type="CharacterBody3D" parent="." groups=["Pug"]]
+script = ExtResource("1_gh8ub")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pug" groups=["Pug"]]
+shape = SubResource("CapsuleShape3D_stsib")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pug" groups=["Pug"]]
+material_override = ExtResource("2_jw4io")
+mesh = SubResource("CapsuleMesh_38sxs")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Pug"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.495, -0.85)
+mesh = SubResource("BoxMesh_mjr8f")
+
+[node name="State Machine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_jegbk")
+initial_state = NodePath("Chase")
+
+[node name="Idle" type="Node" parent="State Machine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("4_ctmp5")
+enemy = NodePath("../../Pug")
+
+[node name="Chase" type="Node" parent="State Machine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("5_r8bh3")
+enemy = NodePath("../../Pug")
+
+[node name="Escape" type="Node" parent="State Machine"]
+script = ExtResource("6_8f6k1")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]

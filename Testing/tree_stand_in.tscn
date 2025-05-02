@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dm0d8elwghyo3"]
+
+[node name="TreeStandIn" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9, 0)
+
+[node name="Trunk" type="CSGCylinder3D" parent="."]
+transform = Transform3D(5.95, 0, 0, 0, 20.28, 0, 0, 0, 5.95, 0, -7, 0)
+use_collision = true
+radius = 0.091
+height = 0.278
+
+[node name="TreeTop" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1.6, 0, 0, 0, 1, 0, -3, 0)
+radius = 3.134

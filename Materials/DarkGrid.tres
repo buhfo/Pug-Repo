@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dhg1r7hm7mc1a"]
+
+[ext_resource type="Texture2D" uid="uid://6gynpt7ci0e2" path="res://Kenney Prototype stuff/Dark/texture_13.png" id="1_lnyop"]
+
+[resource]
+albedo_texture = ExtResource("1_lnyop")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_offset = Vector3(0, 0, -0.185)
+uv1_triplanar = true
+uv1_world_triplanar = true

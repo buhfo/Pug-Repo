@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://1k51r4xp5hv3"]
 
 [ext_resource type="Material" uid="uid://coowaxvf4q1yf" path="res://Materials/Red.tres" id="1_x4ve6"]
-[ext_resource type="Script" path="res://Scripts/fartLOLLLL.gd" id="2_i86we"]
+[ext_resource type="Script" uid="uid://b4a7wiudsuj2e" path="res://Scripts/fartLOLLLL.gd" id="2_i86we"]
 
 [node name="EVIL!" type="Node3D"]
 

@@ -1,0 +1,64 @@
+[gd_scene load_steps=11 format=3 uid="uid://dlpjif83x2mf5"]
+
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_s2swo"]
+[ext_resource type="Material" uid="uid://er1uhbr6wogm" path="res://Materials/Blue.tres" id="2_fl2g2"]
+[ext_resource type="Script" path="res://Player/GunScript.gd" id="3_8qjhp"]
+[ext_resource type="PackedScene" uid="uid://qyc8y37862ua" path="res://Menus/pause_menu.tscn" id="3_e0me4"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3ri2o"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_lbfdx"]
+material = ExtResource("2_fl2g2")
+size = Vector3(0.1, 0.1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_20j2e"]
+size = Vector3(0.01, 0.05, 0.05)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_4tk3o"]
+viewport_path = NodePath("CharacterBody3D/Head/Camera3D/Phone/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wxkit"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_4tk3o")
+
+[sub_resource type="QuadMesh" id="QuadMesh_ohuqw"]
+size = Vector2(0.5, 1)
+
+[node name="Player" type="Node3D"]
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." groups=["Player"]]
+script = ExtResource("1_s2swo")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_3ri2o")
+
+[node name="Head" type="Node3D" parent="CharacterBody3D"]
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.640348, 0)
+
+[node name="Gunstandin" type="MeshInstance3D" parent="CharacterBody3D/Head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.31, -0.119348, -0.025)
+mesh = SubResource("BoxMesh_lbfdx")
+skeleton = NodePath("../../../..")
+script = ExtResource("3_8qjhp")
+default_pos = Vector3(0.31, -0.119348, -0.025)
+aiming_pos = Vector3(0, -0.1, -0.025)
+
+[node name="Sight" type="MeshInstance3D" parent="CharacterBody3D/Head/Camera3D/Gunstandin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07, -0.468)
+mesh = SubResource("BoxMesh_20j2e")
+skeleton = NodePath("../../../../..")
+
+[node name="Phone" type="MeshInstance3D" parent="CharacterBody3D/Head/Camera3D"]
+transform = Transform3D(0.843391, 0, 0.5373, 0, 1, 0, -0.5373, 0, 0.843391, -1.574, -0.525, -1.555)
+material_override = SubResource("StandardMaterial3D_wxkit")
+mesh = SubResource("QuadMesh_ohuqw")
+skeleton = NodePath("../../../..")
+
+[node name="SubViewport" type="SubViewport" parent="CharacterBody3D/Head/Camera3D/Phone"]
+
+[node name="PauseMenu" parent="CharacterBody3D/Head/Camera3D/Phone/SubViewport" instance=ExtResource("3_e0me4")]
+visible = false
+
+[editable path="CharacterBody3D/Head/Camera3D/Phone/SubViewport/PauseMenu"]

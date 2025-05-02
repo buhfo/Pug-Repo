@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3 uid="uid://tkce5n4sap64"]
+
+[ext_resource type="Script" path="res://Scripts/PugStateMachine.gd" id="1_gh8ub"]
+[ext_resource type="Material" uid="uid://d2kkttwkjxam3" path="res://Materials/Green.tres" id="2_jw4io"]
+[ext_resource type="Script" path="res://Scripts/States/State Machine.gd" id="3_jegbk"]
+[ext_resource type="Script" path="res://Scripts/States/PugIdle.gd" id="4_ctmp5"]
+[ext_resource type="Script" path="res://Scripts/States/State.gd" id="5_2ouo4"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_stsib"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_38sxs"]
+
+[node name="PUG" type="Node3D"]
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+script = ExtResource("1_gh8ub")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_stsib")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+material_override = ExtResource("2_jw4io")
+mesh = SubResource("CapsuleMesh_38sxs")
+
+[node name="State Machine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_jegbk")
+initial_state = NodePath("EnemyChase")
+
+[node name="EnemyIdle" type="Node" parent="State Machine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("4_ctmp5")
+enemy = NodePath("../../CharacterBody3D")
+move_speed = null
+player_path = null
+
+[node name="EnemyChase" type="Node" parent="State Machine"]
+script = ExtResource("5_2ouo4")
+
+[node name="EnemyRunAway" type="Node" parent="State Machine"]
+script = ExtResource("5_2ouo4")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]

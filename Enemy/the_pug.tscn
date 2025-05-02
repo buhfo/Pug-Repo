@@ -1,0 +1,104 @@
+[gd_scene load_steps=8 format=3 uid="uid://cwq3dte4aj8md"]
+
+[ext_resource type="Material" uid="uid://d2kkttwkjxam3" path="res://Materials/Green.tres" id="1_i30ha"]
+[ext_resource type="Script" uid="uid://wakb3xs8y2x3" path="res://Scripts/the_pug.gd" id="1_xwfx2"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_vdpbu"]
+material = ExtResource("1_i30ha")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_x8ndp"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_udl6f"]
+size = Vector3(0.1, 0.1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4she1"]
+size = Vector3(5, 2, 15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_70hdj"]
+size = Vector3(2, 2, 2)
+
+[node name="PugTotal" type="Node3D" groups=["Pug"]]
+
+[node name="Pug" type="CharacterBody3D" parent="." groups=["Pug"]]
+script = ExtResource("1_xwfx2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pug" groups=["Pug"]]
+mesh = SubResource("CapsuleMesh_vdpbu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pug" groups=["Pug"]]
+shape = SubResource("CapsuleShape3D_x8ndp")
+
+[node name="Nose" type="MeshInstance3D" parent="Pug" groups=["Pug"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.465, -0.81)
+mesh = SubResource("BoxMesh_udl6f")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="Pug" groups=["Pug"]]
+avoidance_enabled = true
+neighbor_distance = 6049.94
+max_neighbors = 1
+max_speed = 2771.9
+use_3d_avoidance = true
+avoidance_priority = 0.0
+
+[node name="Finder" type="Area3D" parent="Pug" groups=["Pug"]]
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pug/Finder" groups=["Pug"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6.5)
+shape = SubResource("BoxShape3D_4she1")
+
+[node name="Hitbox" type="Area3D" parent="Pug" groups=["Pug"]]
+collision_layer = 0
+collision_mask = 3
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pug/Hitbox" groups=["Pug"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+shape = SubResource("BoxShape3D_70hdj")
+
+[node name="EscapePoints" type="Node3D" parent="." groups=["Pug"]]
+
+[node name="Escape1" type="Node3D" parent="EscapePoints" groups=["Pug"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 113, 0, 0)
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="EscapePoints/Escape1"]
+
+[node name="Escape2" type="Node3D" parent="EscapePoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 82, 0, 46)
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="EscapePoints/Escape2"]
+
+[node name="Escape3" type="Node3D" parent="EscapePoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 71)
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="EscapePoints/Escape3"]
+
+[node name="Escape4" type="Node3D" parent="EscapePoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49, 0, 50)
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="EscapePoints/Escape4"]
+
+[node name="Escape5" type="Node3D" parent="EscapePoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -112, 0, 0)
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="EscapePoints/Escape5"]
+
+[node name="Escape6" type="Node3D" parent="EscapePoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -83, 0, -49)
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="EscapePoints/Escape6"]
+
+[node name="Escape7" type="Node3D" parent="EscapePoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -86)
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="EscapePoints/Escape7"]
+
+[node name="Escape8" type="Node3D" parent="EscapePoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 81, 0, -75)
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="EscapePoints/Escape8"]
+
+[connection signal="velocity_computed" from="Pug/NavigationAgent3D" to="Pug" method="_on_navigation_agent_3d_velocity_computed"]
+[connection signal="body_entered" from="Pug/Finder" to="Pug" method="_on_finder_body_entered"]
+[connection signal="body_entered" from="Pug/Hitbox" to="Pug" method="_on_hitbox_body_entered"]
