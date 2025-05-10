@@ -97,7 +97,6 @@ func chase():
 
 func wandering(delta):
 	found_escape = false
-	player._stop_scaring()
 	speed = walkingSpeed
 	dog_body.set_surface_override_material(0, GREEN)
 	if (global_transform.origin + velocity) != self.position:
@@ -115,7 +114,6 @@ func wandering(delta):
 	wanderTimer -= delta
 
 func escaping(delta):
-	print(furthest_point)
 	if found_escape == false:
 		get_furthest_point(player.global_position)
 		found_escape = true
@@ -154,7 +152,6 @@ func _on_finder_body_entered(body: Node3D) -> void:
 func _on_hitbox_body_entered(body: Node3D) -> void:
 	if body.is_in_group("Player"):
 		PlayerGlobal.Health -= 1
-		print(PlayerGlobal.Health)
 
 func _swap_state_to_escape():
 	isChasing = false

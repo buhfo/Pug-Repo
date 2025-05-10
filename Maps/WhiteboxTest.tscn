@@ -299,6 +299,7 @@ environment = SubResource("Environment_sdfgm")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+layers = 524289
 light_color = Color(0.597773, 0.589861, 0.455452, 1)
 
 [node name="Player" parent="." instance=ExtResource("2_qv5wi")]
@@ -308,7 +309,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 89, 1.5, 206)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 
 [node name="Pug" type="CharacterBody3D" parent="Pug" groups=["Pug"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104.328, 0, 164.903)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -57.7401, 0, -187.035)
 script = ExtResource("2_y8mhp")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Pug/Pug" groups=["Pug"]]

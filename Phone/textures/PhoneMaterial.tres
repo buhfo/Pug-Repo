@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://b5nsi1wbck0en"]
+
+[ext_resource type="Texture2D" uid="uid://jr00aje8e7f2" path="res://Phone/PhoneTexturesDitheredphotoshop.png" id="1_atdl2"]
+
+[resource]
+albedo_texture = ExtResource("1_atdl2")

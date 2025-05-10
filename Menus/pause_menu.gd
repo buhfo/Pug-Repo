@@ -2,6 +2,7 @@ extends Control
 
 @onready var player: CharacterBody3D = $"../../../../.."
 
+
 @onready var resume: Button = $MarginContainer/VBoxContainer/Resume
 
 

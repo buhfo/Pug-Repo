@@ -3,13 +3,25 @@ extends CharacterBody3D
 
 #references to the other parts of the player
 @onready var gun: MeshInstance3D = $Head/Camera3D/Gunstandin
+
+##PAUSE HERE
 @onready var pause_menu: Control = $Head/Camera3D/Phone/SubViewport/PauseMenu
 @onready var resume: Button = $Head/Camera3D/Phone/SubViewport/PauseMenu/MarginContainer/VBoxContainer/Resume
 @onready var viewport: SubViewport = $Head/Camera3D/Phone/SubViewport
-@onready var phone: MeshInstance3D = $Head/Camera3D/Phone
+@onready var phone: Node3D = $Head/Camera3D/Phone
+@onready var menu: MarginContainer = $Head/Camera3D/Phone/SubViewport/PauseMenu/MarginContainer
+var phone_turned = false
+var menu_up = false
+
+
+
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
-@onready var pug_run_away: NavigationObstacle3D = $"../PugRunAway"
+@onready var anims: AnimationTree = $Head/Camera3D/Phone/AnimationTree
+@onready var subview_cam: Camera3D = %Subview_cam
+
+
+
 
 #materials
 const BLUE = preload("res://Materials/Blue.tres")
@@ -34,8 +46,9 @@ const  BASE_FOV = 90.0
 const FOV_CHANGE = -0.5
 
 #Booleans
-var menu_up = false
+var can_go = true
 var pug_scared = false
+
 
 #pug run stuff
 var grow_rate = 0.2
@@ -57,22 +70,25 @@ func _unhandled_input(event):
 		#Stops the player from doing flips with the mouse
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
 
+
+###USED FOR PAUSE
 func _input(event):
 	#makes it so you can interact with the menu on the phone
 	if menu_up:
 		viewport.push_input(event)
 
+func _process(_delta):
+	subview_cam.set_global_transform(camera.get_global_transform())
 
 func _physics_process(delta: float) -> void:
-	if pug_scared:
-		pug_run_away.radius += grow_rate
 	#shoots the gun when clicked
 	if Input.is_action_just_pressed("shoot") and can_shoot:
 		_shoot_gun()
 	
 	if Input.is_action_just_pressed("esc") and gun.is_aiming == false:
 		_menu()
-	
+	if Input.is_action_just_pressed("turn") and menu_up:
+		_turn_phone()
 	if gun.is_aiming and menu_up:
 		_force_menu_close()
 	
@@ -123,21 +139,51 @@ func _physics_process(delta: float) -> void:
 
 #toggles pulling the menu up and putting it away
 func _menu():
-	if menu_up:
-		phone._phone_toggle()
+	if menu_up and phone.is_ready == true:
+		if !phone_turned:
+			anims["parameters/conditions/close_phone"] = true
+			anims["parameters/conditions/open_phone"] = false
+		if phone_turned:
+			anims["parameters/conditions/turn_up"] = true
+			anims["parameters/conditions/turn_side"] = false
+			anims["parameters/conditions/close_phone"] = true
+			anims["parameters/conditions/open_phone"] = false
+			menu.rotation = 0
+		#phone._phone_toggle()
 		viewport.set_process(true)
 		pause_menu.hide()
-	if !menu_up:
+	if !menu_up and phone.is_ready == true:
+		anims["parameters/conditions/open_phone"] = true
+		anims["parameters/conditions/close_phone"] = false
 		phone._phone_toggle()
 		pause_menu.show()
 		resume.grab_focus()
 	menu_up = !menu_up
 
+func _turn_phone():
+	if menu_up and phone.is_ready == true:
+		anims["parameters/conditions/close_phone"] = false
+		anims["parameters/conditions/open_phone"] = false
+		if phone_turned:
+			menu.rotation = 0
+			anims["parameters/conditions/turn_up"] = true
+			anims["parameters/conditions/turn_side"] = false
+		if !phone_turned:
+			menu.rotation_degrees = -90
+			anims["parameters/conditions/turn_up"] = false
+			anims["parameters/conditions/turn_side"] = true
+	phone_turned = !phone_turned
+
 #forces the menu to close, specifically when you aim and its open
 func _force_menu_close():
+	if phone_turned and phone.is_ready == true:
+		anims["parameters/conditions/turn_up"] = true
+		anims["parameters/conditions/turn_side"] = false
+		anims["parameters/conditions/close_phone"] = true
+		anims["parameters/conditions/open_phone"] = false
 	pause_menu.hide()
 	menu_up = false
-	phone._phone_toggle()
+	#phone._phone_toggle()
 
 #controls the headbobbing 
 func _headbob(time) -> Vector3:
@@ -206,11 +252,14 @@ func _shoot_gun():
 	can_shoot = true
 	gun._shoot_toggle()
 
-func _scare_pug():
-	pug_run_away.show()
-	pug_scared = true
 
-func _stop_scaring():
-	pug_run_away.radius = 0
-	pug_run_away.hide()
-	pug_scared = false
+
+
+
+
+func _on_animation_tree_animation_finished(_anim_name: StringName) -> void:
+	can_go = true
+
+
+func _on_animation_tree_animation_started(_anim_name: StringName) -> void:
+	can_go = false

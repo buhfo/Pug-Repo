@@ -1,0 +1,68 @@
+[gd_scene load_steps=13 format=3 uid="uid://n66c1q21w1gl"]
+
+[ext_resource type="PackedScene" uid="uid://bkrdk87oodo0m" path="res://Phone/PhonePainted NoMaterialAdded.blend" id="1_ikg77"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ikg77"]
+animation = &"Cylinder Open"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vn4ng"]
+animation = &"Top Open"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_i6q1q"]
+animation = &"Bottom Open"
+
+[sub_resource type="AnimationNodeBlend3" id="AnimationNodeBlend3_fl75e"]
+sync = true
+
+[sub_resource type="AnimationNodeTimeSeek" id="AnimationNodeTimeSeek_k2gks"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_tt0r4"]
+graph_offset = Vector2(-149.576, 173.57)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_i6q1q")
+nodes/Animation/position = Vector2(-120, 60)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_ikg77")
+"nodes/Animation 2/position" = Vector2(-120, 320)
+"nodes/Animation 3/node" = SubResource("AnimationNodeAnimation_vn4ng")
+"nodes/Animation 3/position" = Vector2(-120, 580)
+nodes/Blend3/node = SubResource("AnimationNodeBlend3_fl75e")
+nodes/Blend3/position = Vector2(140, 260)
+nodes/TimeSeek/node = SubResource("AnimationNodeTimeSeek_k2gks")
+nodes/TimeSeek/position = Vector2(360, 220)
+nodes/output/position = Vector2(600, 220)
+node_connections = [&"Blend3", 0, &"Animation", &"Blend3", 1, &"Animation 2", &"Blend3", 2, &"Animation 3", &"TimeSeek", 0, &"Blend3", &"output", 0, &"TimeSeek"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_llx1y"]
+animation = &"Bottom Open"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rv1jm"]
+animation = &"Cylinder Open"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_l52tb"]
+animation = &"Top Open"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_accf3"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_ikg77"]
+states/BlendTree/node = SubResource("AnimationNodeBlendTree_tt0r4")
+states/BlendTree/position = Vector2(451, -46)
+"states/Bottom Open/node" = SubResource("AnimationNodeAnimation_llx1y")
+"states/Bottom Open/position" = Vector2(575, 57)
+"states/Cylinder Open/node" = SubResource("AnimationNodeAnimation_rv1jm")
+"states/Cylinder Open/position" = Vector2(357, 109)
+states/Start/position = Vector2(313, -46)
+"states/Top Open/node" = SubResource("AnimationNodeAnimation_l52tb")
+"states/Top Open/position" = Vector2(328, 182)
+transitions = ["Start", "BlendTree", SubResource("AnimationNodeStateMachineTransition_accf3")]
+graph_offset = Vector2(-37, -124)
+
+[node name="PhoneModel" instance=ExtResource("1_ikg77")]
+
+[node name="PhoneClose" parent="Bottom Half/Cylinder" index="0"]
+transform = Transform3D(1, -1.52668e-10, 2.53887e-09, 1.52668e-10, 1, -5.38548e-10, -2.53887e-09, 5.38548e-10, 1, 0.197534, -0.58, 0)
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="3"]
+tree_root = SubResource("AnimationNodeStateMachine_ikg77")
+anim_player = NodePath("../AnimationPlayer")
+parameters/BlendTree/Blend3/blend_amount = 1.0
+parameters/BlendTree/TimeSeek/seek_request = -1.0

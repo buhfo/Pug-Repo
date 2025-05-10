@@ -1,0 +1,144 @@
+[gd_scene load_steps=18 format=3 uid="uid://djc2u8uggsea1"]
+
+[ext_resource type="PackedScene" uid="uid://c0g78via37p1q" path="res://Phone/PhoneRigging.blend" id="1_4sivm"]
+[ext_resource type="Material" uid="uid://bjksmip3guhl" path="res://Phone/UV.tres" id="2_jb4b6"]
+[ext_resource type="Script" uid="uid://bivh0vcux3k5f" path="res://Player/phone.gd" id="2_vqc3y"]
+[ext_resource type="PackedScene" uid="uid://qyc8y37862ua" path="res://Menus/pause_menu.tscn" id="3_6fv3d"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_vqc3y"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_q5td2"]
+animation = &"Close"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6fv3d"]
+animation = &"Open"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vqc3y"]
+animation = &"Return"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cq1wg"]
+animation = &"Turn"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t6rfv"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"open_phone"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3xxco"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"close_phone"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mts25"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"turn_side"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_h05yx"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"turn_up"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1uh1p"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"close_phone"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_voj1n"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"turn_side"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q5td2"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"open_phone"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_vgn03"]
+states/Close/node = SubResource("AnimationNodeAnimation_q5td2")
+states/Close/position = Vector2(692, 100)
+states/End/position = Vector2(898, 100)
+states/Open/node = SubResource("AnimationNodeAnimation_6fv3d")
+states/Open/position = Vector2(408, 100)
+states/Return/node = SubResource("AnimationNodeAnimation_vqc3y")
+states/Return/position = Vector2(619, 10)
+states/Start/position = Vector2(197, 100)
+states/Turn/node = SubResource("AnimationNodeAnimation_cq1wg")
+states/Turn/position = Vector2(490, 10)
+transitions = ["Start", "Open", SubResource("AnimationNodeStateMachineTransition_t6rfv"), "Open", "Close", SubResource("AnimationNodeStateMachineTransition_3xxco"), "Open", "Turn", SubResource("AnimationNodeStateMachineTransition_mts25"), "Turn", "Return", SubResource("AnimationNodeStateMachineTransition_h05yx"), "Return", "Close", SubResource("AnimationNodeStateMachineTransition_1uh1p"), "Return", "Turn", SubResource("AnimationNodeStateMachineTransition_voj1n"), "Close", "Open", SubResource("AnimationNodeStateMachineTransition_q5td2")]
+graph_offset = Vector2(18.0705, 1)
+
+[node name="Phone" instance=ExtResource("1_4sivm")]
+script = ExtResource("2_vqc3y")
+
+[node name="Skeleton3D" parent="Rig" index="0"]
+bones/0/position = Vector3(-0.0434166, -0.160708, -0.0367988)
+bones/0/rotation = Quaternion(-0.392749, -0.0850698, 0.88749, -0.22555)
+bones/2/position = Vector3(0.0127641, -0.122194, 0.152875)
+bones/2/rotation = Quaternion(0.487745, 0.5188, -0.510778, -0.481723)
+bones/4/position = Vector3(-0.318135, -0.107633, 0.0223427)
+bones/4/rotation = Quaternion(-0.0119245, -0.195848, 0.025292, 0.980236)
+bones/6/position = Vector3(-0.364667, 1.13737, 0.00462783)
+bones/6/rotation = Quaternion(0.00845958, -0.119205, 0.0404356, 0.99201)
+
+[node name="Bottom Half" parent="Rig/Skeleton3D" index="0"]
+transform = Transform3D(0.882948, -0.469472, 1.78814e-07, 0.469472, 0.882947, 1.63913e-07, -1.78814e-07, -4.00469e-08, 1, -0.000326525, 9.08822e-05, -2.98023e-08)
+
+[node name="Bottom Half" parent="Rig/Skeleton3D/Bottom Half" index="0"]
+layers = 524288
+material_override = ExtResource("2_jb4b6")
+
+[node name="RotateCyl" parent="Rig/Skeleton3D" index="1"]
+transform = Transform3D(-0.999391, 0.0348992, 2.51457e-08, -0.0348992, -0.999391, 1.29046e-07, 9.59262e-08, 8.44011e-10, 1, -0.000248986, -2.38642e-05, -4.47035e-08)
+
+[node name="RotateCyl" parent="Rig/Skeleton3D/RotateCyl" index="0"]
+layers = 524288
+material_override = ExtResource("2_jb4b6")
+
+[node name="TopHalfREAL" parent="Rig/Skeleton3D" index="2"]
+transform = Transform3D(-0.999391, 0.0348993, 1.78814e-07, -0.0348993, -0.999391, -1.39698e-08, 2.08616e-07, -3.72529e-09, 1, 2.08616e-07, 5.96046e-08, -5.58794e-08)
+
+[node name="TopHalfREAL" parent="Rig/Skeleton3D/TopHalfREAL" index="0"]
+layers = 524288
+material_override = ExtResource("2_jb4b6")
+
+[node name="TopScreen_2" parent="Rig/Skeleton3D" index="3"]
+transform = Transform3D(-0.999391, 0.0348993, 0, -0.0348993, -0.999391, -3.72529e-09, 0, 0, 1, -5.96046e-08, 1.19209e-07, -3.53903e-08)
+
+[node name="TopScreen_2" parent="Rig/Skeleton3D/TopScreen_2" index="0"]
+layers = 524288
+material_override = ExtResource("2_jb4b6")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Rig/Skeleton3D/TopScreen_2/TopScreen_2" index="0"]
+transform = Transform3D(1, -2.8871e-08, 1.49012e-08, 2.42144e-08, 1, -5.58794e-09, -2.98023e-08, 8.60424e-16, 1, -0.160702, -1.00154, 5.32181e-08)
+layers = 524288
+light_energy = 0.07
+light_cull_mask = 4294443008
+
+[node name="Sprite3D" type="Sprite3D" parent="Rig/Skeleton3D/TopScreen_2/TopScreen_2" index="1"]
+transform = Transform3D(-1.11464e-08, -1.86265e-09, -0.255, -1.11022e-16, 0.255, -1.86265e-09, 0.255, -5.55111e-17, -1.11464e-08, 0.0974546, -0.929153, -1.44835e-08)
+layers = 524288
+flip_h = true
+flip_v = true
+double_sided = false
+texture = SubResource("ViewportTexture_vqc3y")
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="2"]
+tree_root = SubResource("AnimationNodeStateMachine_vgn03")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/close_phone = false
+parameters/conditions/open_phone = false
+parameters/conditions/turn_side = false
+parameters/conditions/turn_up = false
+
+[node name="SubViewport" type="SubViewport" parent="." index="3"]
+transparent_bg = true
+handle_input_locally = false
+canvas_cull_mask = 4294967294
+size = Vector2i(329, 648)
+render_target_update_mode = 4
+
+[node name="PauseMenu" parent="SubViewport" index="0" instance=ExtResource("3_6fv3d")]
+
+[editable path="SubViewport/PauseMenu"]

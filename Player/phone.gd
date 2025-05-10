@@ -1,4 +1,4 @@
-extends MeshInstance3D
+extends Node3D
 
 var ads_lerp = 20
 const ads_slow_lerp = 5
@@ -6,7 +6,7 @@ const ads_fast_lerp = 20
 
 @onready var camera: Camera3D = $".."
 
-
+var is_ready = true
 
 @export var default_pos : Vector3
 @export var holding_pos : Vector3
