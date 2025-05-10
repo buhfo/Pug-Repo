@@ -20,6 +20,7 @@ var menu_up = false
 @onready var anims: AnimationTree = $Head/Camera3D/Phone/AnimationTree
 @onready var subview_cam: Camera3D = %Subview_cam
 
+@onready var anim_tree: AnimationTree = $Head/Camera3D/Phone/AnimationTree
 
 
 
@@ -57,6 +58,8 @@ var grow_rate = 0.2
 #Captures the mouse when the game is started (no mouse on screen)
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	anim_tree.animation_finished.connect(_on_animation_tree_animation_finished)
+	anim_tree.animation_started.connect(_on_animation_tree_animation_started)
 
 #Controls the camera in reference to the mouse movement
 #unhandled input means that this is called every time an input is done in game
@@ -79,6 +82,7 @@ func _input(event):
 
 func _process(_delta):
 	subview_cam.set_global_transform(camera.get_global_transform())
+	print(can_go)
 
 func _physics_process(delta: float) -> void:
 	#shoots the gun when clicked
@@ -139,29 +143,27 @@ func _physics_process(delta: float) -> void:
 
 #toggles pulling the menu up and putting it away
 func _menu():
-	if menu_up and phone.is_ready == true:
+	if menu_up and phone.is_ready == true and can_go:
 		if !phone_turned:
 			anims["parameters/conditions/close_phone"] = true
 			anims["parameters/conditions/open_phone"] = false
 		if phone_turned:
+			menu.rotation = 0
 			anims["parameters/conditions/turn_up"] = true
 			anims["parameters/conditions/turn_side"] = false
 			anims["parameters/conditions/close_phone"] = true
 			anims["parameters/conditions/open_phone"] = false
-			menu.rotation = 0
 		#phone._phone_toggle()
 		viewport.set_process(true)
-		pause_menu.hide()
-	if !menu_up and phone.is_ready == true:
+	if !menu_up and phone.is_ready == true and can_go:
 		anims["parameters/conditions/open_phone"] = true
 		anims["parameters/conditions/close_phone"] = false
 		phone._phone_toggle()
-		pause_menu.show()
 		resume.grab_focus()
 	menu_up = !menu_up
 
 func _turn_phone():
-	if menu_up and phone.is_ready == true:
+	if menu_up and phone.is_ready == true and can_go:
 		anims["parameters/conditions/close_phone"] = false
 		anims["parameters/conditions/open_phone"] = false
 		if phone_turned:
@@ -177,13 +179,17 @@ func _turn_phone():
 #forces the menu to close, specifically when you aim and its open
 func _force_menu_close():
 	if phone_turned and phone.is_ready == true:
+		menu.rotation = 0
 		anims["parameters/conditions/turn_up"] = true
 		anims["parameters/conditions/turn_side"] = false
 		anims["parameters/conditions/close_phone"] = true
 		anims["parameters/conditions/open_phone"] = false
-	pause_menu.hide()
+	if !phone_turned:
+		anims["parameters/conditions/turn_up"] = false
+		anims["parameters/conditions/turn_side"] = false
+		anims["parameters/conditions/close_phone"] = true
+		anims["parameters/conditions/open_phone"] = false
 	menu_up = false
-	#phone._phone_toggle()
 
 #controls the headbobbing 
 func _headbob(time) -> Vector3:
@@ -257,9 +263,18 @@ func _shoot_gun():
 
 
 
-func _on_animation_tree_animation_finished(_anim_name: StringName) -> void:
-	can_go = true
+func _on_animation_tree_animation_finished(anim_name: StringName) -> void:
+	if anim_name == "Close":
+		can_go = true
+		print("CLOSEDDD!!!!!!")
+		phone._phone_toggle()
+	if anim_name == "Open":
+		can_go = true
+	if anim_name == "Turn":
+		can_go = true
+	if anim_name == "Return":
+		can_go = true
 
 
-func _on_animation_tree_animation_started(_anim_name: StringName) -> void:
+func _on_animation_tree_animation_started(anim_name: StringName) -> void:
 	can_go = false

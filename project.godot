@@ -19,10 +19,6 @@ config/icon="res://icon.svg"
 PugGlobal="*res://Scripts/Globals/PugGlobal.gd"
 PlayerGlobal="*res://Scripts/Globals/PlayerGlobal.gd"
 
-[display]
-
-window/size/mode=3
-
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/proton_scatter/plugin.cfg")

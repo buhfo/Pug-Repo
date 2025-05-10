@@ -45,7 +45,7 @@ mesh = SubResource("BoxMesh_20j2e")
 skeleton = NodePath("../../../../..")
 
 [node name="Phone" parent="CharacterBody3D/Head/Camera3D" instance=ExtResource("4_gwnis")]
-transform = Transform3D(0.253769, 0, -0.430815, 0, 0.5, 0, 0.430815, 0, 0.253769, -1.026, -0.835, -1.118)
+transform = Transform3D(0.253769, 0, -0.430815, 0, 0.5, 0, 0.430815, 0, 0.253769, -1.574, -1.685, -1.555)
 default_pos = Vector3(-1.574, -1.685, -1.555)
 holding_pos = Vector3(-1.026, -0.835, -1.118)
 
